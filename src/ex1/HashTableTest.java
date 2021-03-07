@@ -18,8 +18,9 @@ class HashTableTest {
         for (int i=0; i < n; i++){
             hashTable.put("key"+i, "value"+i);
         }
+        hashTable.drop("key0");
         System.out.println(hashTable.toString());
-        Assertions.assertEquals(n, hashTable.count());
+        Assertions.assertEquals(n-1, hashTable.count());
     }
 
     @org.junit.jupiter.api.Test
@@ -79,4 +80,4 @@ class HashTableTest {
 }
 
 //
-// ERRORES: COUNT NO VA |  DROP DELETEA TODA LA LINEA DE COLISIONES SI SE BORRA LA PRIMERA | PUT NO SUSTITUYE CUANDO METES UNA KEY EXISTENTE
+// ERRORES: COUNT NO VA, NO SUMABA AL HACER PUT NI RESTABA AL HACER DROP |  DROP DELETEA TODA LA LINEA DE COLISIONES SI SE BORRA LA PRIMERA | PUT NO SUSTITUYE CUANDO METES UNA KEY EXISTENTE
