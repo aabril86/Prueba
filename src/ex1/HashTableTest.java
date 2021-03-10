@@ -30,16 +30,25 @@ class HashTableTest {
         Assertions.assertEquals(16, hashTable.size());
     }
 
-    @ParameterizedTest
-    @CsvSource({"key1, value1", "key, value2", "10, value3"})
+    @Test
     //probar elemento que no colisione primero, otro con una key ya existente, y otro que colisione HAY QUE UTILITZAR EL METODO getCollisionsForKey
-    void put(String key, String value) {
+    void put() {
+        //crear hashTable
         HashTable hashTable = new HashTable();
+        //comprobar que esta vacía
+        Assertions.assertEquals("", hashTable.toString());
         hashTable.put("key","value");
-        System.out.println(hashTable.getCollisionsForKey("key", 5));
-        hashTable.put(key, value);
-        System.out.println(hashTable.toString());
-        Assertions.assertEquals(value, hashTable.get(key));
+        //comprobar que se ha insertado el elemento
+        Assertions.assertEquals("value", hashTable.get("key"));
+        //Probar a insertar otro elemento usando la misma key (debe sustituirse)
+        hashTable.put("key", "value2");
+        Assertions.assertEquals("\n" +
+                " bucket[15] = [key, value2]", hashTable.toString());
+
+        //Insertar elemento que colisione (deberían salir los dos)
+        hashTable.put(hashTable.getCollisionsForKey("key"), "value3");
+        Assertions.assertEquals("\n" +
+                " bucket[15] = [key, value2] -> [" + hashTable.getCollisionsForKey("key") + ", value3]", hashTable.toString());
     }
 
     @ParameterizedTest
@@ -74,11 +83,39 @@ class HashTableTest {
             hashTable.put("key", "value");
             hashTable.put(key, "collisioneeees" );
             hashTable.put("10", "collisioneeees1" );
-            System.out.println(hashTable.count());
             System.out.println(hashTable.toString());
+            //borrar el 2o elemento de la colision
             hashTable.drop(key);
+            Assertions.assertEquals("\n" +
+                    " bucket[15] = [key, value] -> [10, collisioneeees1]" , hashTable.toString());
+
+            //añadir elemento para volver a tener tres
+            hashTable.put("32", "prueba3");
+            //borrar el primer elemento
+            hashTable.drop("key");
+            Assertions.assertEquals("\n" +
+                    " bucket[15] = [10, collisioneeees1] -> [32, prueba3]", hashTable.toString());
+            //añadir elemento para tener 3 y borrar el ultimo
+            hashTable.put("21", "prueba4");
+            hashTable.drop("21");
+            Assertions.assertEquals("\n" +
+                    " bucket[15] = [10, collisioneeees1] -> [32, prueba3]", hashTable.toString());
+
+            //borrar el primer y segundo elemento
+            hashTable.put("21", "prueba5");
+            hashTable.drop("10");
+            hashTable.drop("32");
+            Assertions.assertEquals("\n" +
+                    " bucket[15] = [21, prueba5]", hashTable.toString());
+
+            //primero y tercero
+            hashTable.put("10", "prueba6");
+            hashTable.put("32", "prueba7");
+            hashTable.drop("21");
+            hashTable.drop("32");
             System.out.println(hashTable.toString());
-            Assertions.assertNotEquals("", hashTable.toString());
+            Assertions.assertEquals("\n" +
+                    " bucket[15] = [10, prueba6]", hashTable.toString());
         }
     }
 }
@@ -86,6 +123,6 @@ class HashTableTest {
 //ERRORES:
 // 1 - Al añadir un elemento con una key existente, el elemento no se sustituye
 // 2 - Al borrar el primer elemento de una colisión, se borra toda la linea
-// 3 - Al borrar el primer elemento de una colision de más de dos y después borrar el último, este no se borra
+// 3 - Al intentar borrar el primer elemento de una colision de más de dos, no se borra
 // 3 - Sumar items cuando se añade un elemento
 // 4 - Restar items cuando se borra un elemento
