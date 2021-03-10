@@ -124,5 +124,6 @@ class HashTableTest {
 // 1 - Al añadir un elemento con una key existente, el elemento no se sustituye
 // 2 - Al borrar el primer elemento de una colisión, se borra toda la linea
 // 3 - Al intentar borrar el primer elemento de una colision de más de dos, no se borra
-// 3 - Sumar items cuando se añade un elemento
-// 4 - Restar items cuando se borra un elemento
+// 4 - Si intentamos borrar el primer elemento y el tercero, tampoco funciona
+// 4 - Sumar items cuando se añade un elemento
+// 5 - Restar items cuando se borra un elemento
