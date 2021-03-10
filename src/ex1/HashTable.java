@@ -40,15 +40,16 @@ public class HashTable {
             HashEntry temp = entries[hash];
             if(key.equals(temp.key)){
                 entries[hash] = hashEntry;
+                //no sumamos item aquí por que se sustituye el elemento
             }else{
                 while(temp.next != null)
                     temp = temp.next;
 
                 temp.next = hashEntry;
                 hashEntry.prev = temp;
+                //sumar elemento para el count
+                ITEMS++;
             }
-            //sumar elemento para el count
-            ITEMS++;
 
             //codigo original
 //            HashEntry temp = entries[hash];

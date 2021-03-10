@@ -1,11 +1,12 @@
-package ex1;
+package ex2;
 
+import ex1.HashTable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class HashTableTest {
 
@@ -24,7 +25,7 @@ class HashTableTest {
         Assertions.assertEquals(n-1, hashTable.count());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void size() {
         HashTable hashTable = new HashTable();
         Assertions.assertEquals(16, hashTable.size());
@@ -86,6 +87,5 @@ class HashTableTest {
 //ERRORES:
 // 1 - Al añadir un elemento con una key existente, el elemento no se sustituye
 // 2 - Al borrar el primer elemento de una colisión, se borra toda la linea
-// 3 - Al borrar el primer elemento de una colision de más de dos y después borrar el último, este no se borra
 // 3 - Sumar items cuando se añade un elemento
 // 4 - Restar items cuando se borra un elemento
