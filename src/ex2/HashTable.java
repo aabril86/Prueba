@@ -28,6 +28,7 @@ public class HashTable {
      * @param value El propi element que es vol afegir.
      */
     public void put(String key, String value) {
+        //codigo arreglado
         int hash = getHash(key);
         final HashEntry hashEntry = new HashEntry(key, value);
 
@@ -52,12 +53,20 @@ public class HashTable {
             }
 
             //codigo original
-//            HashEntry temp = entries[hash];
-//            while(temp.next != null)
-//                temp = temp.next;
+//            int hash = getHash(key);
+//            final HashEntry hashEntry = new HashEntry(key, value);
 //
-//            temp.next = hashEntry;
-//            hashEntry.prev = temp;
+//            if(entries[hash] == null) {
+//                entries[hash] = hashEntry;
+//            }
+//            else {
+//                HashEntry temp = entries[hash];
+//                while(temp.next != null)
+//                    temp = temp.next;
+//
+//                temp.next = hashEntry;
+//                hashEntry.prev = temp;
+//            }
         }
     }
 
@@ -71,16 +80,30 @@ public class HashTable {
         if(entries[hash] != null) {
             HashEntry temp = findKey(key, entries[hash]);
 
-            return temp.value;
+            if(temp.key.equals(key)) return temp.value;
+            else return null;
         }
 
         return null;
+
+
+//        int hash = getHash(key);
+//        if(entries[hash] != null) {
+//            HashEntry temp = entries[hash];
+//
+//            while( !temp.key.equals(key))
+//                temp = temp.next;
+//
+//            return temp.value;
+//        }
+//
+//        return null;
     }
 
     private HashEntry findKey(String key, HashEntry entry) {
         HashEntry temp = entry;
 
-        while (!temp.key.equals(key))  //esta parte del codigo se repite en get y drop tambien. Su función es buscar la key en el entry
+        while (!temp.key.equals(key) && temp.next != null)
             temp = temp.next;
         return temp;
     }
@@ -92,7 +115,6 @@ public class HashTable {
     public void drop(String key) {
         int hash = getHash(key);
         if(entries[hash] != null) {
-
             HashEntry temp = findKey(key, entries[hash]);
 
             //comprobar que no tiene nada después tampoco
@@ -101,12 +123,19 @@ public class HashTable {
                 ITEMS--;
             }
             else{
-                if(temp.next != null) {
+                if(temp.prev == null){
+                    temp = temp.next;
+                    temp.prev = null;
+                    entries[hash] = temp;
+                }else if(temp.prev != null){
+                    temp.prev.next = temp.next;    //esborrem temp, per tant actualitzem el següent de l'anterior
+                }else if(temp.next != null) {
                     temp.next.prev = temp.prev;   //esborrem temp, per tant actualitzem l'anterior al següent
+                }else if(temp.next == null){
+                    temp.prev.next = null;
+                    temp.prev = null;
                 }
-                //comprobar que tiene previo
-                if(temp.prev != null)
-                    temp.prev.next = temp.next;                         //esborrem temp, per tant actualitzem el següent de l'anterior
+
                 ITEMS--;
             }
         }

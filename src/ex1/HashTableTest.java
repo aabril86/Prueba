@@ -52,12 +52,19 @@ class HashTableTest {
     }
 
     @ParameterizedTest
-    @CsvSource({ "key, value","key1, value1"})
+    @CsvSource({ "key, value","key1, value1", "10, value2"})
     void get(String key, String value) {
         HashTable hashTable = new HashTable();
         hashTable.put("key", "value");
-        if(key.equals("key")) Assertions.assertEquals(value, hashTable.get(key));
-        else Assertions.assertNull(hashTable.get(key));
+        if(key.equals("key") || key.equals("key1")) {
+            if (key.equals("key")) Assertions.assertEquals(value, hashTable.get(key));
+            else Assertions.assertNull(hashTable.get(key));
+        }else{
+            hashTable.put(key, value);
+            hashTable.drop(key);
+            System.out.println(hashTable.toString());
+            assertNull(hashTable.get(key));
+        }
     }
 
     @ParameterizedTest
@@ -121,9 +128,9 @@ class HashTableTest {
 }
 
 //ERRORES:
-// 1 - Al añadir un elemento con una key existente, el elemento no se sustituye
-// 2 - Al borrar el primer elemento de una colisión, se borra toda la linea
-// 3 - Al intentar borrar el primer elemento de una colision de más de dos, no se borra
-// 4 - Si intentamos borrar el primer elemento y el tercero, tampoco funciona
-// 4 - Sumar items cuando se añade un elemento
-// 5 - Restar items cuando se borra un elemento
+// 1 - Al añadir un elemento con una key existente, el elemento no se sustituye DONE
+// 2 - Al borrar el primer elemento de una colisión, se borra toda la linea DONE
+// 3 - Al intentar borrar el primer elemento de una colision de más de dos, no se borra, Si intentamos borrar el primer elemento y el tercero, tampoco funciona DONE
+// 4 - Sumar items cuando se añade un elemento DONE
+// 5 - Restar items cuando se borra un elemento DONE
+// 6 - Al colisionar un elemento, borrarlo e intentar hacer un get, obtenemos un Nullpointer (debería retornar null)

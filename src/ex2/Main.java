@@ -20,5 +20,3 @@ public class Main {
         System.out.println(msg);
     }
 }
-
-//He decidido extraer tanto el metodo main como el log (que solamente utiliza el main)

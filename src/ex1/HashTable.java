@@ -80,13 +80,27 @@ public class HashTable {
         if(entries[hash] != null) {
             HashEntry temp = entries[hash];
 
-            while( !temp.key.equals(key))
+            while( !temp.key.equals(key) && temp.next != null)
                 temp = temp.next;
 
-            return temp.value;
+            if(temp.key.equals(key)) return temp.value;
+            else return null;
         }
 
         return null;
+
+
+//        int hash = getHash(key);
+//        if(entries[hash] != null) {
+//            HashEntry temp = entries[hash];
+//
+//            while( !temp.key.equals(key))
+//                temp = temp.next;
+//
+//            return temp.value;
+//        }
+//
+//        return null;
     }
 
     /**
