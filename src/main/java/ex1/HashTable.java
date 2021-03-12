@@ -4,7 +4,7 @@ package ex1;
 // Modified by Fernando Porrino Serrano for academic purposes.
 
 import java.util.ArrayList;
-
+//prueba
 /**
  * Implementació d'una taula de hash sense col·lisions.
  * Original source code: https://gist.github.com/amadamala/3cdd53cb5a6b1c1df540981ab0245479
